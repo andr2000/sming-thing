@@ -1,0 +1,92 @@
+menu "SPI settings"
+choice
+	prompt "Flash size"
+	default SPI_SIZE_1MIB
+
+config SPI_SIZE_1MIB
+	bool "1 MiB"
+
+config SPI_SIZE_4MIB
+	bool "4 MiB"
+
+endchoice
+
+choice
+	prompt "Speed"
+	default SPI_SPEED_40MHZ
+
+config SPI_SPEED_20MHZ
+	bool "20 MHz"
+
+config SPI_SPEED_26_7MHZ
+	bool "26.7 MHz"
+
+config SPI_SPEED_40MHZ
+	bool "40 MHz"
+
+config SPI_SPEED_80MHZ
+	bool "80 MHz"
+
+endchoice
+
+choice
+	prompt "Mode"
+	default SPI_MODE_QIO
+
+config SPI_MODE_QIO
+	bool "Quad I/O: 4 pins used for address & data. Fastest."
+
+config SPI_MODE_DIO
+	bool "Dual I/O: 2 pins used for address & data. Approx 45% slower than qio."
+
+config SPI_MODE_QOUT
+	bool "Quad Output: 4 pins used for data. Approx 15% slower than qio."
+
+config SPI_MODE_DOUT
+	bool "Dual Output: 2 pins used for data. Approx 50% slower than qio."
+
+endchoice
+
+endmenu
+
+config WIFI
+	tristate
+
+menu "WiFi settings"
+config WIFI_SSID
+	string "WiFi SSID"
+
+config WIFI_PWD
+	string "WiFi password"
+endmenu
+
+menu "RBoot OTA settings"
+config RBOOT_OTA_HOST
+	string "rboot OTA host"
+
+config RBOOT_OTA_PORT
+	int "rboot OTA port"
+	default "80"
+endmenu
+
+menu "MQTT settings"
+config MQTT_USER
+	string "MQTT user ID"
+
+config MQTT_PWD
+	string "MQTT password"
+
+config MQTT_HOST
+	string "MQTT host"
+
+config MQTT_PORT
+	int "MQTT port"
+	default "1883"
+endmenu
+
+config DEBUG
+	bool "Enable log functions"
+	default y
+	help
+	  Say Y if you want to enable logging.
+	  If you say N here, logging is not compiled.

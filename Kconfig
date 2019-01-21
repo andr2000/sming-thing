@@ -1,0 +1,15 @@
+mainmenu "ESP8266 thing configuration"
+
+choice
+	prompt "Thing type"
+	default ACTUATOR
+
+config ACTUATOR
+	tristate "Actuator thing"
+
+config THERMOMETER_DS18B20
+	tristate "Thermometer thing with DS18b20"
+
+endchoice
+
+source "thing/Kconfig"
