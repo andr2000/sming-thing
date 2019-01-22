@@ -1,7 +1,31 @@
 GIT_VERSION = $(shell git describe --long --dirty --always --tags)
 
-all:
+################################################################################
+# Sming required environment
+################################################################################
+ifndef SMING_HOME
+$(error SMING_HOME is not set. Please configure it)
+endif
+ifndef ESP_HOME
+$(error ESP_HOME is not set. Please configure it)
+endif
 
+all:
+	$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk all
+
+tags:
+	ctags -R --c-kinds=+p --c++-kinds=+p . $(SMING_HOME)
+
+clean:
+	$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk clean
+	rm -f tags
+	rm -f config
+	rm -rf .autoconf
+	rm -rf include/autoconf.h
+
+################################################################################
+# Kconfig section
+################################################################################
 KCONF_TARGET ?= help
 
 KCONF_ARGS += KCONFIG_AUTOCONFIG=".autoconf/dummy"
@@ -11,19 +35,16 @@ KCONF_ARGS += KCONFIG_CONFIG=".config"
 kconfig:
 	mkdir -p .autoconf
 	mkdir -p include
-	$(MAKE) -f kconfig/GNUmakefile $(KCONF_ARGS) TOPDIR=. SRCDIR=kconfig $(KCONF_TARGET)
+	$(MAKE) -f kconfig/GNUmakefile $(KCONF_ARGS) TOPDIR=. SRCDIR=kconfig \
+		$(KCONF_TARGET)
 
 menuconfig: KCONF_TARGET=menuconfig
 menuconfig: kconfig
 
-tags:
-	ctags -R --c-kinds=+p --c++-kinds=+p .
-
-clean:
-	rm -f tags
-	rm -f config
-	rm -rf .autoconf
-	rm -rf include/autoconf.h
-
+################################################################################
+# The rest
+################################################################################
 .SECONDARY:
 .PHONY: all kconfig menuconfig tags clean
+
+
