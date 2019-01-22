@@ -10,7 +10,10 @@ ifndef ESP_HOME
 $(error ESP_HOME is not set. Please configure it)
 endif
 
+-include .config
+
 all:
+	$(if $(wildcard .config),, $(error No .config exists, config first!))
 	$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk all
 
 tags:
