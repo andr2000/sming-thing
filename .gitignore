@@ -1,3 +1,8 @@
+.autoconf/
+.config*
+.tmpconfig*
+include/
+
 # Prerequisites
 *.d
 
