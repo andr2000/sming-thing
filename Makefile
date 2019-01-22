@@ -22,9 +22,11 @@ tags:
 clean:
 	$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk clean
 	rm -f tags
-	rm -f .config
 	rm -rf .autoconf
 	rm -rf include/autoconf.h
+
+distclean: clean
+	rm -f .config
 
 ################################################################################
 # Kconfig section
@@ -48,6 +50,6 @@ menuconfig: kconfig
 # The rest
 ################################################################################
 .SECONDARY:
-.PHONY: all kconfig menuconfig tags clean
+.PHONY: all kconfig menuconfig tags clean distclean
 
 
