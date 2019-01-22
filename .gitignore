@@ -1,7 +1,12 @@
+# kconfig related
 .autoconf/
 .config*
 .tmpconfig*
 include/
+kconfig/.depend
+kconfig/mconf
+kconfig/zconf.hash.c
+kconfig/zconf.lex.c
 
 # Prerequisites
 *.d
