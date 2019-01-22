@@ -10,11 +10,18 @@ ifndef ESP_HOME
 $(error ESP_HOME is not set. Please configure it)
 endif
 
+MODULES = app
+EXTRA_INCDIR = include
+USER_CFLAGS = -DVERSION=\"$(GIT_VERSION)\"
+
+# Read the build configuration if exists
 -include config.mk
 
 all:
 	$(if $(wildcard config.mk),, $(error No .config exists, config first!))
-	$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk all
+	MODULES=$(MODULES) EXTRA_INCDIR=$(EXTRA_INCDIR) \
+		USER_CFLAGS=$(USER_CFLAGS) \
+		$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk all
 
 tags:
 	ctags -R --c-kinds=+p --c++-kinds=+p . $(SMING_HOME)
