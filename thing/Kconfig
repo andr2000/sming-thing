@@ -1,66 +1,118 @@
 menu "SPI settings"
+
+config DISABLE_SPIFFS
+	string
+	default "0" if CONFIG_SPIFFS_SUPPORT='y'
+	default "1" if CONFIG_SPIFFS_SUPPORT='n'
+
+config CONFIG_SPIFFS_SUPPORT
+	bool "SPI flash file system (spiffs) support"
+
+config SPI_SIZE
+	string
+	default "1M" if CONFIG_SPI_SIZE_1MIB='y'
+	default "4M" if CONFIG_SPI_SIZE_4MIB='y'
+
 choice
 	prompt "Flash size"
-	default SPI_SIZE_1MIB
+	default CONFIG_SPI_SIZE_1MIB
 
-config SPI_SIZE_1MIB
+config CONFIG_SPI_SIZE_1MIB
 	bool "1 MiB"
 
-config SPI_SIZE_4MIB
+config CONFIG_SPI_SIZE_4MIB
 	bool "4 MiB"
-
 endchoice
+
+config SPI_SPEED
+	string
+	default "20" if CONFIG_SPI_SPEED_20MHZ='y'
+	default "26" if CONFIG_SPI_SPEED_26_7MHZ='y'
+	default "40" if CONFIG_SPI_SPEED_40MHZ='y'
+	default "80" if CONFIG_SPI_SPEED_80MHZ='y'
 
 choice
 	prompt "Speed"
-	default SPI_SPEED_40MHZ
+	default CONFIG_SPI_SPEED_40MHZ
 
-config SPI_SPEED_20MHZ
+config CONFIG_SPI_SPEED_20MHZ
 	bool "20 MHz"
 
-config SPI_SPEED_26_7MHZ
+config CONFIG_SPI_SPEED_26_7MHZ
 	bool "26.7 MHz"
 
-config SPI_SPEED_40MHZ
+config CONFIG_SPI_SPEED_40MHZ
 	bool "40 MHz"
 
-config SPI_SPEED_80MHZ
+config CONFIG_SPI_SPEED_80MHZ
 	bool "80 MHz"
-
 endchoice
+
+config SPI_MODE
+	string
+	default "qio"  if CONFIG_SPI_MODE_QIO ='y'
+	default "qout" if CONFIG_SPI_MODE_QOUT='y'
+	default "dio"  if CONFIG_SPI_MODE_DIO ='y'
+	default "dout" if CONFIG_SPI_MODE_DOUT='y'
 
 choice
 	prompt "Mode"
-	default SPI_MODE_QIO
+	default CONFIG_SPI_MODE_QIO
 
-config SPI_MODE_QIO
+config CONFIG_SPI_MODE_QIO
 	bool "Quad I/O: 4 pins used for address & data. Fastest."
 
-config SPI_MODE_DIO
+config CONFIG_SPI_MODE_DIO
 	bool "Dual I/O: 2 pins used for address & data. Approx 45% slower than qio."
 
-config SPI_MODE_QOUT
+config CONFIG_SPI_MODE_QOUT
 	bool "Quad Output: 4 pins used for data. Approx 15% slower than qio."
 
-config SPI_MODE_DOUT
+config CONFIG_SPI_MODE_DOUT
 	bool "Dual Output: 2 pins used for data. Approx 50% slower than qio."
-
 endchoice
 
 endmenu
 
-config WIFI
-	tristate
-
 menu "WiFi settings"
-config WIFI_SSID
+config CONFIG_WIFI_SSID
 	string "WiFi SSID"
 
-config WIFI_PWD
+config CONFIG_WIFI_PWD
 	string "WiFi password"
 endmenu
 
 menu "RBoot OTA settings"
+
+config RBOOT_ENABLED
+	int
+	default 1
+
+config RBOOT_BIG_FLASH
+	int
+	default 1
+	depends on CONFIG_SPI_SIZE_4MIB='y'
+
+config	RBOOT_TWO_ROMS
+	int
+	default 1
+
+config	RBOOT_ROM_0
+	string "First ROM binary name"
+	default "rom0"
+
+config	RBOOT_ROM_1
+	string "Second ROM binary name"
+	default "rom1"
+
+config	RBOOT_LD_0
+	string "Linker file for the first ROM"
+	default "rom0.ld"
+
+config	RBOOT_LD_1
+	string "Linker file for the second ROM"
+	default "rom1.ld"
+
 config RBOOT_OTA_HOST
 	string "rboot OTA host"
 
@@ -70,21 +122,31 @@ config RBOOT_OTA_PORT
 endmenu
 
 menu "MQTT settings"
-config MQTT_USER
+config CONFIG_MQTT_USER
 	string "MQTT user ID"
 
-config MQTT_PWD
+config CONFIG_MQTT_PWD
 	string "MQTT password"
 
-config MQTT_HOST
+config CONFIG_MQTT_HOST
 	string "MQTT host"
 
-config MQTT_PORT
+config CONFIG_MQTT_PORT
 	int "MQTT port"
 	default "1883"
 endmenu
 
-config DEBUG
+menu "Host serial port settings"
+config	COM_PORT
+	string "Serial port"
+	default "/dev/ttyUSB0"
+
+config	COM_SPEED
+	int "Serial port speed"
+	default 115200
+endmenu
+
+config CONFIG_DEBUG
 	bool "Enable log functions"
 	default y
 	help

@@ -1,8 +1,9 @@
 # kconfig related
-.autoconf/
+.kconfig/
 .config*
+config.mk
 .tmpconfig*
-include/
+include/autoconf.h
 kconfig/.depend
 kconfig/mconf
 kconfig/zconf.hash.c

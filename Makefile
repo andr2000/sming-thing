@@ -10,10 +10,10 @@ ifndef ESP_HOME
 $(error ESP_HOME is not set. Please configure it)
 endif
 
--include .config
+-include config.mk
 
 all:
-	$(if $(wildcard .config),, $(error No .config exists, config first!))
+	$(if $(wildcard config.mk),, $(error No .config exists, config first!))
 	$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk all
 
 tags:
@@ -21,27 +21,34 @@ tags:
 
 clean:
 	$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk clean
-	rm -f tags
-	rm -rf .autoconf
-	rm -rf include/autoconf.h
+	@rm -f tags
+	@rm -rf .kconfig
 
 distclean: clean
-	rm -f .config
+	@rm -rf include/autoconf.h
+	@rm -f .config
+	@rm -f config.mk
 
 ################################################################################
 # Kconfig section
 ################################################################################
 KCONF_TARGET ?= help
 
-KCONF_ARGS += KCONFIG_AUTOCONFIG=".autoconf/dummy"
+KCONF_ARGS += KCONFIG_AUTOCONFIG=".kconfig/dummy"
 KCONF_ARGS += KCONFIG_AUTOHEADER="include/autoconf.h"
 KCONF_ARGS += KCONFIG_CONFIG=".config"
 
 kconfig:
-	mkdir -p .autoconf
-	mkdir -p include
+	@mkdir -p .kconfig
+	@mkdir -p include
 	$(MAKE) -f kconfig/GNUmakefile $(KCONF_ARGS) TOPDIR=. SRCDIR=kconfig \
 		$(KCONF_TARGET)
+	$(if $(wildcard config.mk),, $(error No .config exists, config first!))
+	@cp .config config.mk
+# Do not expose CONFIG_ values used by C/C++ code
+	@sed -i '/^CONFIG_/d' config.mk
+# Sming doesn't want values in quotes
+	@sed 's/\"//g' -i config.mk
 
 menuconfig: KCONF_TARGET=menuconfig
 menuconfig: kconfig
