@@ -975,6 +975,7 @@ static int handle_exit(void)
 					  "\n\n"));
 			return 1;
 		}
+		conf_write_autoconf();
 		/* fall through */
 	case -1:
 		printf(_("\n\n"
