@@ -1,4 +1,0 @@
-[submodule "kconfig"]
-	path = kconfig
-	url = https://github.com/guillon/kconfig.git
-	ignore = dirty
