@@ -149,6 +149,10 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 	}
 }
 
+void systemIsReady() {
+	Serial.println("Reported as ready");
+}
+
 void init(void)
 {
 	Serial.begin(SERIAL_BAUD_RATE); // 115200 by default
@@ -161,4 +165,6 @@ void init(void)
 	Serial.println();
 
 	Serial.setCallback(serialCallBack);
+
+	System.onReady(systemIsReady);
 }
