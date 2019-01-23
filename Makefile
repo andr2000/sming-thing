@@ -35,8 +35,6 @@ endif
 # We use Sming to control the build, but configuration
 include $(SMING_HOME)/Makefile-rboot.mk
 
-#$(if $(wildcard config.mk),, $(error No .config exists, config first!))
-
 tags:
 	ctags -R --c-kinds=+p --c++-kinds=+p . $(SMING_HOME) $(ESP_HOME)
 
@@ -55,11 +53,9 @@ KCONF_ARGS += KCONFIG_AUTOCONFIG="$(KCONFIG_OUT_DIR)/dummy"
 KCONF_ARGS += KCONFIG_AUTOHEADER="include/autoconf.h"
 KCONF_ARGS += KCONFIG_CONFIG="$(KCONFIG_OUT_DIR)/.config"
 
-kconfig:
-	@mkdir -p $(KCONFIG_OUT_DIR)
-	@mkdir -p include
-	$(MAKE) -f kconfig/GNUmakefile $(KCONF_ARGS) TOPDIR=. SRCDIR=kconfig \
-		$(KCONF_TARGET)
+mk_config:
+	$(info Generating config.mk)
+	$(if $(wildcard $(KCONFIG_OUT_DIR)/.config),, $(error Cannot create config.mk, something went wrong!))
 	@cp $(KCONFIG_OUT_DIR)/.config $(KCONFIG_OUT_DIR)/config.mk
 # Only expose CONFIG_SMING_ values
 	@sed -i '/^CONFIG_SMING/!d' $(KCONFIG_OUT_DIR)/config.mk
@@ -68,11 +64,20 @@ kconfig:
 # Sming doesn't want values in quotes
 	@sed 's/\"//g' -i $(KCONFIG_OUT_DIR)/config.mk
 
+kconfig:
+	@mkdir -p $(KCONFIG_OUT_DIR)
+	@mkdir -p include
+	$(MAKE) -f kconfig/GNUmakefile $(KCONF_ARGS) TOPDIR=. SRCDIR=kconfig \
+		$(KCONF_TARGET)
+
 menuconfig: KCONF_TARGET=menuconfig
-menuconfig: kconfig
+menuconfig: kconfig | mk_config
+
+oldconfig: KCONF_TARGET=oldconfig
+oldconfig: kconfig | mk_config
 
 ################################################################################
 # The rest
 ################################################################################
 SECONDARY:
-.PHONY: kconfig menuconfig tags distclean
+.PHONY: kconfig menuconfig oldconfig tags distclean mk_config
