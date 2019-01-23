@@ -1,5 +1,10 @@
 mainmenu "ESP8266 thing configuration"
 
+config	THING_NAME
+	string
+	default "Actuator" if THING_ACTUATOR='y'
+	default "Thermometer" if THING_THERMOMETER_DS18B20='y'
+
 choice
 	prompt "Thing type"
 	default THING_ACTUATOR
