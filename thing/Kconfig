@@ -146,9 +146,26 @@ config	SMING_COM_SPEED
 	default 115200
 endmenu
 
-config DEBUG
-	bool "Enable log functions"
-	default y
-	help
-	  Say Y if you want to enable logging.
-	  If you say N here, logging is not compiled.
+config SMING_DEBUG_VERBOSE_LEVEL
+	int
+	default 0 if DEBUG_LVL_ERROR   ='y'
+	default 1 if DEBUG_LVL_WARNING ='y'
+	default 2 if DEBUG_LVL_INFO    ='y'
+	default 3 if DEBUG_LVL_DEBUG   ='y'
+
+choice
+	prompt "Set verbosity level"
+	default DEBUG_LVL_ERROR
+
+config DEBUG_LVL_ERROR
+	bool "Error"
+
+config DEBUG_LVL_WARNING
+	bool "Warning"
+
+config DEBUG_LVL_INFO
+	bool "Info"
+
+config DEBUG_LVL_DEBUG
+	bool "Debug"
+endchoice
