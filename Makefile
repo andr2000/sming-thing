@@ -10,14 +10,28 @@ ifndef ESP_HOME
 $(error ESP_HOME is not set. Please configure it)
 endif
 
-MODULES = app
-EXTRA_INCDIR = include
-USER_CFLAGS = -DVERSION=\"$(GIT_VERSION)\"
-
 KCONFIG_OUT_DIR=.kconfig
 
 # Read the build configuration if exists
 -include $(KCONFIG_OUT_DIR)/config.mk
+
+MODULES += app
+EXTRA_INCDIR += include
+USER_CFLAGS += -DVERSION=\"$(GIT_VERSION)\"
+
+# If you want to use, for example, two 512k roms in the first 1mb block of flash
+# (old style) then follow these instructions to produce two separately linked
+# roms. If you are flashing a single rom to multiple 1mb flash blocks (using big
+# flash) you only need one linked rom that can be used on each.
+
+ifeq ($(SPI_SIZE),1M)
+RBOOT_LD_0	:= $(addprefix ld/1mib/,$(RBOOT_LD_0))
+RBOOT_LD_1	:= $(addprefix ld/1mib/,$(RBOOT_LD_1))
+else
+RBOOT_LD_0	:= $(addprefix ld/,$(RBOOT_LD_0))
+RBOOT_LD_1	:=
+endif
+
 # We use Sming to control the build, but configuration
 include $(SMING_HOME)/Makefile-rboot.mk
 

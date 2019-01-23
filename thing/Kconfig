@@ -90,12 +90,13 @@ config SMING_RBOOT_ENABLED
 
 config SMING_RBOOT_BIG_FLASH
 	int
-	default 1
-	depends on SPI_SIZE_4MIB='y'
+	default 0 if SPI_SIZE_1MIB='y'
+	default 1 if SPI_SIZE_1MIB='n'
 
 config	SMING_RBOOT_TWO_ROMS
 	int
-	default 1
+	default 0 if SPI_SIZE_1MIB='n'
+	default 1 if SPI_SIZE_1MIB='y'
 
 config	SMING_RBOOT_ROM_0
 	string "First ROM binary name"
