@@ -15,7 +15,7 @@ EXTRA_INCDIR = include
 USER_CFLAGS = -DVERSION=\"$(GIT_VERSION)\"
 
 # Read the build configuration if exists
--include config.mk
+-include .kconfig/config.mk
 # We use Sming to control the build. Mostly
 include $(SMING_HOME)/Makefile-rboot.mk
 
@@ -24,15 +24,11 @@ include $(SMING_HOME)/Makefile-rboot.mk
 tags:
 	ctags -R --c-kinds=+p --c++-kinds=+p . $(SMING_HOME)
 
-clean:
-	$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk clean
-	@rm -f tags
-	@rm -rf .kconfig
-
 distclean: clean
-	@rm -rf include/autoconf.h
-	@rm -f .config
-	@rm -f config.mk
+	$(info Cleaning local build artifacts)
+	@rm -f tags
+	@rm -f include/autoconf.h
+	@rm -rf .kconfig
 
 ################################################################################
 # Kconfig section
@@ -41,7 +37,7 @@ KCONF_TARGET ?= help
 
 KCONF_ARGS += KCONFIG_AUTOCONFIG=".kconfig/dummy"
 KCONF_ARGS += KCONFIG_AUTOHEADER="include/autoconf.h"
-KCONF_ARGS += KCONFIG_CONFIG=".config"
+KCONF_ARGS += KCONFIG_CONFIG=".kconfig/.config"
 
 kconfig:
 	@mkdir -p .kconfig
@@ -62,6 +58,6 @@ menuconfig: kconfig
 # The rest
 ################################################################################
 SECONDARY:
-.PHONY: kconfig menuconfig tags clean distclean
+.PHONY: kconfig menuconfig tags distclean
 
 

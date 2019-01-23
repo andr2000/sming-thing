@@ -1,8 +1,6 @@
 # kconfig related
 .kconfig/
-.config*
 config.mk
-.tmpconfig*
 include/autoconf.h
 kconfig/.depend
 kconfig/mconf
