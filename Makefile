@@ -16,12 +16,10 @@ USER_CFLAGS = -DVERSION=\"$(GIT_VERSION)\"
 
 # Read the build configuration if exists
 -include config.mk
+# We use Sming to control the build. Mostly
+include $(SMING_HOME)/Makefile-rboot.mk
 
-all:
-	$(if $(wildcard config.mk),, $(error No .config exists, config first!))
-	MODULES=$(MODULES) EXTRA_INCDIR=$(EXTRA_INCDIR) \
-		USER_CFLAGS=$(USER_CFLAGS) \
-		$(MAKE) -f $(SMING_HOME)/Makefile-rboot.mk all
+#$(if $(wildcard config.mk),, $(error No .config exists, config first!))
 
 tags:
 	ctags -R --c-kinds=+p --c++-kinds=+p . $(SMING_HOME)
@@ -63,7 +61,7 @@ menuconfig: kconfig
 ################################################################################
 # The rest
 ################################################################################
-.SECONDARY:
-.PHONY: all kconfig menuconfig tags clean distclean
+SECONDARY:
+.PHONY: kconfig menuconfig tags clean distclean
 
 

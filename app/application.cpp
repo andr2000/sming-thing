@@ -1,7 +1,7 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include "autoconf.h"
+//#include "autoconf.h"
 
 void init(void)
 {
