@@ -1,6 +1,6 @@
 menu "SPI settings"
 
-config DISABLE_SPIFFS
+config SMING_DISABLE_SPIFFS
 	string
 	default "0" if SPIFFS_SUPPORT='y'
 	default "1" if SPIFFS_SUPPORT='n'
@@ -8,7 +8,7 @@ config DISABLE_SPIFFS
 config SPIFFS_SUPPORT
 	bool "SPI flash file system (spiffs) support"
 
-config SPI_SIZE
+config SMING_SPI_SIZE
 	string
 	default "1M" if SPI_SIZE_1MIB='y'
 	default "4M" if SPI_SIZE_4MIB='y'
@@ -24,7 +24,7 @@ config SPI_SIZE_4MIB
 	bool "4 MiB"
 endchoice
 
-config SPI_SPEED
+config SMING_SPI_SPEED
 	string
 	default "20" if SPI_SPEED_20MHZ='y'
 	default "26" if SPI_SPEED_26_7MHZ='y'
@@ -48,7 +48,7 @@ config SPI_SPEED_80MHZ
 	bool "80 MHz"
 endchoice
 
-config SPI_MODE
+config SMING_SPI_MODE
 	string
 	default "qio"  if SPI_MODE_QIO ='y'
 	default "qout" if SPI_MODE_QOUT='y'
@@ -84,32 +84,32 @@ endmenu
 
 menu "RBoot OTA settings"
 
-config RBOOT_ENABLED
+config SMING_RBOOT_ENABLED
 	int
 	default 1
 
-config RBOOT_BIG_FLASH
+config SMING_RBOOT_BIG_FLASH
 	int
 	default 1
 	depends on SPI_SIZE_4MIB='y'
 
-config	RBOOT_TWO_ROMS
+config	SMING_RBOOT_TWO_ROMS
 	int
 	default 1
 
-config	RBOOT_ROM_0
+config	SMING_RBOOT_ROM_0
 	string "First ROM binary name"
 	default "rom0"
 
-config	RBOOT_ROM_1
+config	SMING_RBOOT_ROM_1
 	string "Second ROM binary name"
 	default "rom1"
 
-config	RBOOT_LD_0
+config	SMING_RBOOT_LD_0
 	string "Linker file for the first ROM"
 	default "rom0.ld"
 
-config	RBOOT_LD_1
+config	SMING_RBOOT_LD_1
 	string "Linker file for the second ROM"
 	default "rom1.ld"
 
@@ -137,11 +137,11 @@ config MQTT_PORT
 endmenu
 
 menu "Host serial port settings"
-config	COM_PORT
+config	SMING_COM_PORT
 	string "Serial port"
 	default "/dev/ttyUSB0"
 
-config	COM_SPEED
+config	SMING_COM_SPEED
 	int "Serial port speed"
 	default 115200
 endmenu
