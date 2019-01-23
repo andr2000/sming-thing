@@ -112,7 +112,7 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 		char str[pos + 1];
 		for(int i = 0; i < pos + 1; i++) {
 			str[i] = stream.read();
-			if(str[i] == '\n') {
+			if(str[i] == '\r' || str[i] == '\n') {
 				str[i] = '\0';
 			}
 		}
@@ -156,7 +156,7 @@ void init(void)
 
 	WifiAccessPoint.enable(false);
 
-	Serial.printf("I am " CONFIG_THING_NAME ", revision " VERSION "\n");
+	Serial.printf("\nI am " CONFIG_THING_NAME ", revision " VERSION "\n");
 	Serial.printf("Current ROM slot %d\n", rboot_get_current_rom());
 	Serial.println();
 
