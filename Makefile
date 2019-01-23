@@ -22,7 +22,7 @@ include $(SMING_HOME)/Makefile-rboot.mk
 #$(if $(wildcard config.mk),, $(error No .config exists, config first!))
 
 tags:
-	ctags -R --c-kinds=+p --c++-kinds=+p . $(SMING_HOME)
+	ctags -R --c-kinds=+p --c++-kinds=+p . $(SMING_HOME) $(ESP_HOME)
 
 distclean: clean
 	$(info Cleaning local build artifacts)
