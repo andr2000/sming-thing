@@ -119,7 +119,7 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 
 		if(!strcmp(str, "connect")) {
 			// connect to wifi
-			WifiStation.config(CONFIG_WIFI_SSID, CONFIG_WIFI_PWD);
+			WifiStation.config(CONFIG_WIFI_SSID, CONFIG_WIFI_PWD, false, false);
 			WifiStation.enable(true);
 			WifiStation.connect();
 		} else if(!strcmp(str, "ip")) {
