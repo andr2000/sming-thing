@@ -1,8 +1,9 @@
 # kconfig related
 .kconfig/
 config.mk
-include/autoconf.h
+include/generated
 kconfig/.depend
+kconfig/conf
 kconfig/mconf
 kconfig/zconf.hash.c
 kconfig/zconf.lex.c

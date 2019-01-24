@@ -1033,6 +1033,7 @@ int conf_write_autoconf(void)
 	sprintf(buf, "%s.tmpconfig.h", dir);
 	if (rename(buf, name))
 		return 1;
+#if 0
 	name = getenv(PRODUCT_ENV"_TRISTATE");
 	if (!name)
 		name = "include/config/tristate.conf";
@@ -1047,7 +1048,7 @@ int conf_write_autoconf(void)
 	sprintf(buf, "%s.tmpconfig", dir);
 	if (rename(buf, name))
 		return 1;
-
+#endif
 	return 0;
 }
 
