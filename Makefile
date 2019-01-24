@@ -43,6 +43,7 @@ distclean: clean
 	@rm -f tags
 	@rm -f include/autoconf.h
 	@rm -rf $(KCONFIG_OUT_DIR)
+	@rm -rf out
 
 ################################################################################
 # Kconfig section
