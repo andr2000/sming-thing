@@ -61,9 +61,13 @@ choice
 
 config SPI_MODE_QIO
 	bool "Quad I/O: 4 pins used for address & data. Fastest."
+	help
+	  For most ESP8266 ESP-01/07 (512 kByte modules).
 
 config SPI_MODE_DIO
 	bool "Dual I/O: 2 pins used for address & data. Approx 45% slower than qio."
+	help
+	  For most ESP32 and ESP8266 ESP-12 (>=4 MByte modules).
 
 config SPI_MODE_QOUT
 	bool "Quad Output: 4 pins used for data. Approx 15% slower than qio."
