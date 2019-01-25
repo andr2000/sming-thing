@@ -151,6 +151,39 @@ config	SMING_COM_SPEED
 	default 115200
 endmenu
 
+menu "Advanced settings"
+
+config SMING_ENABLE_CMD_EXECUTOR
+	int
+	default 0 if CMD_EXECUTOR ='n'
+	default 1 if CMD_EXECUTOR ='y'
+
+config	CMD_EXECUTOR
+	bool "Enable CommandExecutor functionality"
+	help
+	  This feature enables execution of certain commands by registering
+	  token handlers for text received via serial, websocket or telnet
+	  connection. If this feature is not used additional RAM/Flash can
+	  be obtained by setting it to off. This will save ~1KB RAM
+	  and ~3KB of flash memory.
+endmenu
+
+menu "Debugging settings"
+
+config SMING_ENABLE_GDB
+	int
+	default 0 if ENABLE_GDB ='n'
+	default 1 if ENABLE_GDB ='y'
+
+config	ENABLE_GDB
+	bool "Interactive target debugging with gdb"
+	help
+	  In order to be able to debug live directly on the ESP8266
+	  microcontroller you should re-compile the Sming library and
+	  your application with `ENABLE_GDB=1` directive.
+	  See https://github.com/SmingHub/Sming/tree/develop/samples/Basic_Debug
+	  sample for more details.
+
 config SMING_DEBUG_VERBOSE_LEVEL
 	int
 	default 0 if DEBUG_LVL_ERROR   ='y'
@@ -174,3 +207,5 @@ config DEBUG_LVL_INFO
 config DEBUG_LVL_DEBUG
 	bool "Debug"
 endchoice
+
+endmenu
